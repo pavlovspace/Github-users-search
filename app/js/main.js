@@ -1,3 +1,4 @@
+
 import {
     Search
 } from './search.js'
@@ -7,3 +8,4 @@ import {
 } from './view.js'
 
 new Search(new View());
+
