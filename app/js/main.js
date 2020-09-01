@@ -6,4 +6,10 @@ import {
     View
 } from './view.js'
 
-new Search(new View());
+import {
+    Api
+} from './api.js'
+
+const api = new Api()
+
+new Search(new View(), api);
