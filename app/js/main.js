@@ -10,6 +10,10 @@ import {
     Api
 } from './api.js'
 
+import {
+    Log
+} from './log.js'
+
 const api = new Api()
 
-new Search(new View(), api);
+const app = new Search(new View(api), api, new Log());

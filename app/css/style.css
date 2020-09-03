@@ -7,9 +7,14 @@
 body {
   color: #fafafa;
   font-family: "PT Sans", sans-serif;
+  font-weight: 400;
   margin: 0;
   padding: 0;
   background-color: #48c6ef;
+}
+
+a {
+  text-decoration: none;
 }
 
 .app {
@@ -30,8 +35,14 @@ body {
 
 .search-line {
   display: flex;
-  justify-content: center;
-  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 500px;
+}
+.counter {
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
 .search-input {
@@ -44,7 +55,7 @@ body {
   height: 40px;
   line-height: 20px;
   padding: 8px 15px;
-  max-width: 500px;
+  width: 100%;
 }
 
 .users-wrapper {
@@ -60,21 +71,30 @@ body {
   flex-wrap: wrap;
 }
 
-.user {
-  padding-left: 100px;
-  width: 50%;
-}
-
 .user-prev {
   align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
   list-style: none;
-  margin: 10px;
-  padding: 0;
+  padding: 15px;
   text-align: center;
   width: calc(100% / 5 - 20px);
+}
+
+.user-info .user-prev {
+  width: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.user-info .user-prev a {
+  color: #4e4376;
+}
+
+.user-info .user-prev a:hover {
+  background-color: rgb(253, 253, 0);
+  transition: all 0.4s;
 }
 
 .user-prev-photo {
@@ -134,4 +154,10 @@ body {
 
 .btn:focus {
   outline: none;
+}
+
+h2 {
+  text-transform: uppercase;
+  text-shadow: -9px -9px 2px rgba(47, 99, 255, 0.267);
+  font-weight: 700;
 }

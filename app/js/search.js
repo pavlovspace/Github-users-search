@@ -7,9 +7,10 @@ export class Search {
         this.usersCount = count;
     }
 
-    constructor(view, api) {
+    constructor(view, api, log) {
         this.view = view;
         this.api = api;
+        this.log = log;
 
         this.view.searchInput.addEventListener(
             "keyup",
@@ -22,11 +23,13 @@ export class Search {
 
     loadUsers() {
         this.setCurrentPage(1);
+        this.view.setCounterMessage('');
         if (this.view.searchInput.value) {
             this.clearUsers()
             this.usersRequest(this.view.searchInput.value)
         } else {
             this.clearUsers();
+            this.view.toggleLoadBtn(false)
         }
     }
 
@@ -37,12 +40,15 @@ export class Search {
 
     async usersRequest(searchValue) {
         let totalCount;
+        let message;
 
         try {
             await this.api.loadUsers(searchValue, this.currentPage).then((res) => {
                 res.json().then((res) => {
                     totalCount = res.total_count;
+                    message = this.log.counterMessage(totalCount)
                     this.setUsersCount(this.usersCount + res.items.length);
+                    this.view.setCounterMessage(message);
                     this.view.toggleLoadBtn(
                         totalCount > 20 && this.usersCount !== totalCount
                     );
