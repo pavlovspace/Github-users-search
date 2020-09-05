@@ -49,18 +49,20 @@ export class View {
 
     createUser(userData) {
         const userElement = this.createElement('li', 'user-prev');
-        userElement.addEventListener('click', () => this.showUserData(userData));
+
+        userElement.addEventListener('click', () => this.showUserData(userData))
+
         userElement.innerHTML = `<img class="user-prev-photo" src="${userData.avatar_url}" alt="${userData.login}">
                                  <span class="user-prev-name">${userData.login}</span>`;
         this.userList.append(userElement);
     }
 
     showUserData(userData) {
-        this.userWrapper.querySelector('click', () => {
-            usersWrapper.style = 'display: none'
-        })
         const userEl = this.createElement('div', 'user-prev');
+
         this.userWrapper.innerHTML = ''
+        this.userWrapper.style = 'display: block'
+
         this.api.loadUserData(userData.login)
             .then(res => {
                 const [following, followers, repos] = res;
