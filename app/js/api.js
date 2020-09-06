@@ -1,5 +1,5 @@
 const url = 'https://api.github.com/'
-const userPerPage = 20;
+const userPerPage = 10;
 
 export class Api {
 
