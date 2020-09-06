@@ -18,7 +18,6 @@ a {
 }
 
 .app {
-  padding: 0 15px;
   height: 100vh;
   background-image: linear-gradient(to top, #48c6ef 0%, #6f86d6 100%);
 }
@@ -31,6 +30,7 @@ a {
 .main {
   align-items: flex-start;
   display: flex;
+  flex-direction: column;
 }
 
 .search-line {
@@ -39,6 +39,7 @@ a {
   flex-direction: column;
   margin: 0 auto;
   max-width: 500px;
+  padding: 0 15px;
 }
 .counter {
   font-size: 18px;
@@ -96,7 +97,7 @@ a {
   display: none;
   transition: all 0.5s;
   padding-top: 50px;
-  min-width: 320px;
+  width: 100%;
 }
 
 .user-info .user-prev {
@@ -106,6 +107,7 @@ a {
   align-items: center;
   height: 100%;
   width: 100%;
+  margin: 0 auto;
 }
 
 .user-info .user-prev a {
