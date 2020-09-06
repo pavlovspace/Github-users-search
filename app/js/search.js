@@ -1,5 +1,3 @@
-const userPerPage = 20;
-
 export class Search {
     setCurrentPage(pageNumber) {
         this.currentPage = pageNumber;
@@ -9,39 +7,61 @@ export class Search {
         this.usersCount = count;
     }
 
-    constructor(view) {
+    constructor(view, api, log) {
         this.view = view;
+        this.api = api;
+        this.log = log;
 
-        this.view.searchInput.addEventListener("keyup", this.debounce(this.loadUsers.bind(this), 500));
-        this.view.loadMore.addEventListener("click", this.loadUsers.bind(this));
+        this.view.searchInput.addEventListener(
+            "keyup",
+            this.debounce(this.loadUsers.bind(this), 500)
+        );
+        this.view.loadMore.addEventListener("click", this.loadMoreUsers.bind(this));
         this.currentPage = 1;
         this.usersCount = 0;
     }
 
-    async loadUsers() {
-        const searchValue = this.view.searchInput.value
-        let totalCount;
-        if (searchValue) {
-            return await fetch(
-                `https://api.github.com/search/users?q=${searchValue}&per_page=${userPerPage}&page=${this.currentPage}`
-            ).then((res) => {
-                if (res.ok) {
-                    this.setCurrentPage(this.currentPage + 1);
-                    res.json().then((res) => {
-                        totalCount = res.total_count
-                        this.setUsersCount(this.usersCount + res.items.length);
-                        this.view.toggleLoadBtn(totalCount > userPerPage && this.usersCount !== totalCount);
-                        res.items.forEach((user) => this.view.createUser(user));
-                    });
-                } else {}
-            })
-        } else {
+    loadUsers() {
+        this.setCurrentPage(1);
+        this.view.setCounterMessage('');
+        if (this.view.searchInput.value) {
             this.clearUsers()
+            this.usersRequest(this.view.searchInput.value)
+        } else {
+            this.clearUsers();
+            this.view.toggleLoadBtn(false)
+        }
+    }
+
+    loadMoreUsers() {
+        this.setCurrentPage(this.currentPage + 1);
+        this.usersRequest(this.view.searchInput.value);
+    }
+
+    async usersRequest(searchValue) {
+        let totalCount;
+        let message;
+
+        try {
+            await this.api.loadUsers(searchValue, this.currentPage).then((res) => {
+                res.json().then((res) => {
+                    totalCount = res.total_count;
+                    message = this.log.counterMessage(totalCount)
+                    this.setUsersCount(this.usersCount + res.items.length);
+                    this.view.setCounterMessage(message);
+                    this.view.toggleLoadBtn(
+                        totalCount > 20 && this.usersCount !== totalCount
+                    );
+                    res.items.forEach((user) => this.view.createUser(user));
+                });
+            });
+        } catch (e) {
+            console.log('error:' + e);
         }
     }
 
     clearUsers() {
-        this.view.userList.innerHTML = '';
+        this.view.userList.innerHTML = "";
     }
 
     debounce(func, wait, immediate) {
@@ -58,5 +78,5 @@ export class Search {
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
-    };
+    }
 }
